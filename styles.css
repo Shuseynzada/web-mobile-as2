@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
+
+main {
+  padding: 0.5em;
+  background-color: #808080;
+}
+
+#productList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card {
+  margin: 1em;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 1em;
+  box-shadow: 10px 20px 20px black;
+  flex-direction: column;
+}
+
+/* Style for the card title */
+.card .title {
+  font-size: 1.5em;
+  color: #333;
+  margin: 0.5em 0;
+  font-weight: bold;
+}
+
+.card .thumbnail {
+  width: 100%;
+  max-height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card .thumbnail img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 0.5em;
+}
+
+.card .thumbnail .discountPercentage {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  background-color: green;
+  font-size: 0.8em;
+  padding: 0.2em 0.5em;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px 10px 10px 20px;
+}
+
+/* Style for the product description */
+.card .description {
+  color: #555;
+  font-size: 1.1em;
+  margin: 0.8em;
+}
+
+.card .details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em;
+  font-size: 0.8em;
+}
+
+.card .price,
+.card .discountPercentage,
+.card .rating,
+.card .brand {
+  font-size: 1.2em;
+}
+
+.card .rating {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 2px;
+}
+.card .rating img {
+  height: 1em;
+}
+
+.card .images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1em;
+}
+
+.card .images img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 0.2em;
+}
+
+.card .market {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-radius: 0 0 0.5em 0.5em;
+  overflow: hidden;
+  margin-top: 1em;
+}
+.card .market div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card .brand,
+.card .stock {
+  background-color: #555;
+  color: white;
+  padding: 0.2em;
+}
+.card .more {
+  border: 1px solid #555;
+  text-decoration: underline;
+}
+
+.card .more:active {
+  color: green;
+}
+
+@media screen and (max-width: 800px) {
+  #productList {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+
+@media screen and (max-width: 530px) {
+  #productList {
+    grid-template-columns: 1fr;
+  }
+}
