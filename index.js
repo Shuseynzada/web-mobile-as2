@@ -91,13 +91,13 @@ const filterProducts = () => {
 
     const filteredProducts = productsData.filter(product => {
         const matchesSearch = product.title.toLowerCase().includes(searchKeyword) ||
-            product.brand.toLowerCase().includes(searchKeyword) ||
+        product.brand.toLowerCase().includes(searchKeyword) ||
             product.description.toLowerCase().includes(searchKeyword) ||
             (product.category && product.category.toLowerCase().includes(searchKeyword));
         const matchesCategory = !selectedCategory || product.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
-    if (filteredProducts.length + productsPerPage <= currentPage * productsPerPage) currentPage = 1
+    if(filteredProducts.length + productsPerPage  <= currentPage * productsPerPage) currentPage = 1 
     displayProducts(filteredProducts);
 };
 
@@ -109,12 +109,51 @@ const displayProducts = (products) => {
     selectedProducts.forEach(product => {
         productList.appendChild(createCard(product));
     });
+
+    updatePaginationControls(products.length);
 };
+
+//Pagination controls
+const updatePaginationControls = (totalProducts) => {
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    const pageNumbersContainer = document.getElementById('pageNumbers');
+    pageNumbersContainer.innerHTML = ''; // Clear existing page numbers
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageNumber = document.createElement('button');
+        pageNumber.textContent = i;
+        pageNumber.classList.add('page-number');
+        if (i === currentPage) {
+            pageNumber.classList.add('active');
+        }
+        pageNumber.addEventListener('click', () => {
+            currentPage = i;
+            filterProducts();
+        });
+        pageNumbersContainer.appendChild(pageNumber);
+    }
+
+    document.getElementById('prevPage').disabled = currentPage === 1;
+    document.getElementById('nextPage').disabled = currentPage === totalPages;
+};
+
+document.getElementById("prevPage").onclick = () => {
+    if (currentPage > 1) {
+        currentPage--;
+        filterProducts();
+    }
+}
+
+document.getElementById("nextPage").onclick = () => {
+    if (currentPage * productsPerPage < productsData.length) {
+        currentPage++;
+        filterProducts();
+    }
+}
 
 // Event listeners for search and category filter
 searchInput.addEventListener('input', filterProducts);
 categorySelect.addEventListener('change', filterProducts);
-
 
 // Fetch categories and products data
 fetch("https://dummyjson.com/products/categories")
