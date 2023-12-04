@@ -1,4 +1,6 @@
 const productList = document.getElementById("productList")
+const searchInput = document.getElementById("searchInput");
+const categorySelect = document.getElementById("categorySelect");
 
 const createCard = (props) => {
     const card = document.createElement("div")
@@ -50,6 +52,9 @@ const createCard = (props) => {
     const more = document.createElement("div")
     more.classList.add("more")
     more.textContent = "See more"
+    more.onclick = () => {
+        window.location = "./product.html?id=" + props.id
+    }
     const stock = document.createElement("div")
     stock.classList.add("stock")
     stock.textContent = "Stock: " + props.stock
@@ -65,16 +70,64 @@ const createCard = (props) => {
     return card
 }
 
+var productsData = [];
+var currentPage = 1;
+const productsPerPage = 8;
+
+// Function to populate categories in the select dropdown
+const populateCategories = (categories) => {
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+};
+
+// Function to filter and display products
+const filterProducts = () => {
+    const searchKeyword = searchInput.value.toLowerCase();
+    const selectedCategory = categorySelect.value;
+
+    const filteredProducts = productsData.filter(product => {
+        const matchesSearch = product.title.toLowerCase().includes(searchKeyword) ||
+            product.brand.toLowerCase().includes(searchKeyword) ||
+            product.description.toLowerCase().includes(searchKeyword) ||
+            (product.category && product.category.toLowerCase().includes(searchKeyword));
+        const matchesCategory = !selectedCategory || product.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+    });
+    if (filteredProducts.length + productsPerPage <= currentPage * productsPerPage) currentPage = 1
+    displayProducts(filteredProducts);
+};
+
 // Function to display products
 const displayProducts = (products) => {
-    products.forEach(product => {
+    productList.innerHTML = ''; // Clear current products
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const selectedProducts = products.slice(startIndex, startIndex + productsPerPage);
+    selectedProducts.forEach(product => {
         productList.appendChild(createCard(product));
     });
 };
 
-fetch("https://dummyjson.com/products")
+// Event listeners for search and category filter
+searchInput.addEventListener('input', filterProducts);
+categorySelect.addEventListener('change', filterProducts);
+
+
+// Fetch categories and products data
+fetch("https://dummyjson.com/products/categories")
     .then(res => res.json())
     .then(data => {
-        displayProducts(data.products); // Display all products initially
+        populateCategories(data);
+    })
+    .catch(err => console.log(err));
+
+fetch("https://dummyjson.com/products?limit=100")
+    .then(res => res.json())
+    .then(data => {
+        productsData = data.products;
+        displayProducts(productsData); // Display all products initially
     })
     .catch(err => console.log(err));
