@@ -29,7 +29,7 @@ main {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
   padding: 1em;
-  box-shadow: 10px 20px 20px black;
+  box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.2); /* Corrected the box-shadow color */
   flex-direction: column;
 }
 
@@ -148,7 +148,6 @@ main {
   }
 }
 
-
 @media screen and (max-width: 530px) {
   #productList {
     grid-template-columns: 1fr;
@@ -206,7 +205,7 @@ main {
 }
 
 #pagination .page-number {
-  background-color: #f0f0f0;
+  background-color: #707070;
 }
 
 #pagination .page-number.active {
